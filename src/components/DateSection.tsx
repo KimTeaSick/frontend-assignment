@@ -1,34 +1,27 @@
 import * as React from 'react';
 import {ScrollView} from 'react-native';
+
 import {DateButton} from './DateButton';
-import {FC} from 'react';
+import {activeSection} from './utils/activeSection';
 
-const arr = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-];
+export const DateSection: React.FC = () => {
+  const [activeButton, setActiveButton] = React.useState(15);
+  const [showList, setShowList] = React.useState<number[]>([]);
 
-export const DateSection: FC = () => {
+  React.useEffect(() => {
+    const active = activeSection(activeButton);
+    setShowList(active);
+  }, [activeButton]);
+
   return (
-    <ScrollView horizontal={true}>
-      {arr.map((v, i) => (
-        <DateButton title={v} event={() => console.log(v)} key={i} />
+    <ScrollView horizontal={true} style={{flex: 1}}>
+      {showList.map((v, i) => (
+        <DateButton
+          title={String(v)}
+          event={() => setActiveButton(v)}
+          active={activeButton === v}
+          key={i}
+        />
       ))}
     </ScrollView>
   );

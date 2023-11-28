@@ -1,18 +1,20 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {DateSection} from './components/DateSection';
+import {CheckList} from './components/CheckList';
 
 export const Layout: React.FC = () => {
   return (
     <View
       style={{
         flex: 1,
+        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor: '#fff',
       }}>
       <DateSection />
-      <Text style={{fontSize: 24, fontWeight: '600'}}>layout</Text>
+      <CheckList />
     </View>
   );
 };
