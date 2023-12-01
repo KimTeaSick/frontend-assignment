@@ -9,12 +9,11 @@ export const Layout: React.FC = () => {
       style={{
         flex: 1,
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff',
       }}>
       <DateSection />
-      <CheckList />
+      <CheckList id={15} />
     </View>
   );
 };
