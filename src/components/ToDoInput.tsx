@@ -1,9 +1,11 @@
-import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import InputWrapper from './headless/Input';
-import UploadUnableSVG from '../assets/uploadUnable.svg';
-import UploadAbleSVG from '../assets/uploadAble.svg';
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+
+import UploadAbleSVG from '../assets/uploadAble.svg';
+import UploadUnableSVG from '../assets/uploadUnable.svg';
+
+import InputWrapper from './headless/Input';
 import {addList} from '../modules/week';
 
 type Props = {
@@ -15,8 +17,6 @@ export const ToDoInput = ({weekNum}: Props) => {
   const [text, setText] = React.useState('');
 
   const addToDoList = (weekNum: number, text: string) => {
-    console.log(weekNum, text);
-
     dispatch(
       addList({
         weekNum,

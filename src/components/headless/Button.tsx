@@ -25,9 +25,9 @@ const ButtonWrapper = ({title, event, children}: ButtonProps) => {
   );
 };
 
-const Label = () => {
+const Label = ({style}: {style?: {}}) => {
   const {title} = useButtonContext();
-  return <Text>{title}</Text>;
+  return <Text style={style}>{title}</Text>;
 };
 
 const Body = ({children}: React.PropsWithChildren<{}>) => {

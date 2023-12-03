@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+
 import ButtonWrapper from './headless/Button';
 
 type Props = {
@@ -14,7 +15,7 @@ export const DateButton = ({title, event, active}: Props) => {
       <ButtonWrapper.Body>
         <View style={style(active).Button}>
           <Text style={style(active).title}>week</Text>
-          <ButtonWrapper.Label />
+          <ButtonWrapper.Label style={style(active).number} />
         </View>
       </ButtonWrapper.Body>
     </ButtonWrapper>
@@ -32,6 +33,12 @@ const style = (active: boolean) =>
       backgroundColor: active ? '#44CEC6' : '#F6F5F8',
     },
     title: {
+      fontSize: 11,
+      color: active ? '#fff' : '#999',
+    },
+    number: {
+      fontSize: 18,
+      fontWeight: 'bold',
       color: active ? '#fff' : '#999',
     },
   });

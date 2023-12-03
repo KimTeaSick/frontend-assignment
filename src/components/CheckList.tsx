@@ -8,8 +8,9 @@ import {ToDoType} from '../modules/week/index.d';
 import {ToDoList} from './ToDoList';
 import {ToDoInput} from './ToDoInput';
 import {PlusButton} from './PlusButton';
-import {setItem} from '../utils/setItem';
 import {Progress} from './Progress';
+import {EmptyList} from './EmptyList';
+import {setItem} from '../utils/setItem';
 import {checked, deleteList, writeMode} from '../modules/week';
 
 type Props = {
@@ -51,15 +52,17 @@ export const CheckList = ({id}: Props) => {
 
   return (
     <View style={style.toDoListWrapper}>
-      <Progress items={weekToDo} />
-      <View>
-        {weekToDo.map(
-          (item, i) =>
-            item.weekNumber === id && (
-              <ToDoList key={i} item={item} doIt={doIt} deleteIt={deleteIt} />
-            ),
-        )}
-      </View>
+      {weekToDo.length !== 0 ? (
+        <>
+          <Progress items={weekToDo} />
+          {weekToDo.map((item, i) => (
+            <ToDoList key={i} item={item} doIt={doIt} deleteIt={deleteIt} />
+          ))}
+        </>
+      ) : (
+        <EmptyList />
+      )}
+
       {weekSe.writeMode ? (
         <ToDoInput weekNum={id} />
       ) : (
@@ -77,14 +80,5 @@ const style = StyleSheet.create({
     paddingRight: 20,
     justifyContent: 'flex-start',
     backgroundColor: '#fff',
-  },
-  largeText: {
-    fontSize: 20,
-    color: '#84858F',
-    fontWeight: 'bold',
-  },
-  baseText: {
-    fontSize: 18,
-    color: '#999',
   },
 });

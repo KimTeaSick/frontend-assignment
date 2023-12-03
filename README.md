@@ -1,13 +1,6 @@
-2023 - 11 - 27<br />
 ruby 버전 오류로 rbenv install 후 native install<br />
+전에 네이티브를 사용한 프로젝트에서도 개발 환경 조성에서 제일 많은 어려움을 겪어 하루에 한 번 캐시 삭제 후 빌드를 시도 <br />
 
-2023 - 11 - 28<br />
-SVG import를 위해 metro 설정 <br />
-버튼 HeadLessComponent 제작 <br />
+Headless 컴포넌트 사용 UI에 대한 의존성을 낮추기 위해 Button, Input을 Headless로 제작
 
-플러스 버튼 클릭시 이풋 변경
-인풋 바깥쪽 클릭시 포커스 해제
-포커스 해제시 인풋 모드 해제
-삭제 기능
-프로그레스 바 생성
-체크리스트 애니메이션
+인풋 넘어가도록 텍스트 생기는 거

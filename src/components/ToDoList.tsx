@@ -7,6 +7,7 @@ import CheckedSVG from '../assets/checked.svg';
 import UnCheckedSVG from '../assets/unChecked.svg';
 import {ToDoType} from '../modules/week/index.d';
 import {StoreInterface} from '../modules/index.d';
+import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
 type Props = {
   item: ToDoType;
@@ -17,26 +18,46 @@ type Props = {
 export const ToDoList = ({item, doIt, deleteIt}: Props) => {
   const week = useSelector((state: StoreInterface) => state.week);
 
+  const checkWidth = useSharedValue(0);
+  const deleteWidth = useSharedValue(0);
+
+  React.useEffect(() => {
+    if (!week.editMode) {
+      checkWidth.value = withTiming(25, {duration: 100});
+      deleteWidth.value = withTiming(0, {duration: 100});
+    }
+    if (week.editMode) {
+      checkWidth.value = withTiming(0, {duration: 100});
+      deleteWidth.value = withTiming(25, {duration: 100});
+    }
+  }, [deleteWidth, checkWidth, week.editMode]);
+
   return (
     <View style={style(week.editMode).toDoList}>
-      {week.editMode === false && (
-        <TouchableOpacity onPress={() => doIt(item)}>
-          {item.checked ? <CheckedSVG /> : <UnCheckedSVG />}
-        </TouchableOpacity>
+      {!week.editMode && (
+        <Animated.View style={{width: checkWidth}}>
+          <TouchableOpacity onPress={() => doIt(item)}>
+            {item.checked ? <CheckedSVG /> : <UnCheckedSVG />}
+          </TouchableOpacity>
+        </Animated.View>
       )}
-      <Text style={style(week.editMode).toDoText}>{item.content}</Text>
-      {week.editMode === true && (
-        <TouchableOpacity
-          style={style(week.editMode).deleteButton}
-          onPress={() => deleteIt(item)}>
-          <DeleteSVG />
-        </TouchableOpacity>
+      <Text style={style(week.editMode, item.checked).toDoText}>
+        {item.content}
+      </Text>
+      {week.editMode && (
+        <Animated.View style={{width: deleteWidth}}>
+          <TouchableOpacity
+            style={style(week.editMode).deleteButton}
+            onPress={() => deleteIt(item)}>
+            <DeleteSVG />
+          </TouchableOpacity>
+        </Animated.View>
       )}
     </View>
   );
 };
 
-const style = (editMode: boolean) =>
+const style = (editMode: boolean, checked?: boolean) =>
   StyleSheet.create({
     toDoList: {
       marginTop: 10,
@@ -47,13 +68,16 @@ const style = (editMode: boolean) =>
       justifyContent: editMode ? 'space-between' : 'flex-start',
     },
     toDoText: {
+      width: '80%',
       fontSize: 14,
+      flexShrink: 1,
       lineHeight: 21,
       paddingLeft: 12,
-      color: '#333',
+      color: checked ? '#C4C4C4' : '#333',
+      textDecorationLine: checked ? 'line-through' : 'none',
       textAlign: 'left',
     },
     deleteButton: {
-      alignSelf: 'flex-end',
+      alignSelf: 'center',
     },
   });

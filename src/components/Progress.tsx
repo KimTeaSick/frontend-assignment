@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-// import Animated from 'react-native-reanimated';
+
+import {ToDoType} from '../modules/week/index.d';
 
 import {setCompleted} from '../utils/setCompleted';
-import {ToDoType} from '../modules/week/index.d';
 import {ProgressBar} from './ProgressBar';
 
 type Props = {
@@ -17,6 +17,7 @@ export const Progress = ({items}: Props) => {
     const complte = setCompleted(items);
     setCompletedToDo(complte);
   }, [items]);
+
   return (
     <View style={style.progressWrapper}>
       <View style={style.textSection}>
