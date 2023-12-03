@@ -1,9 +1,12 @@
-type QuestionType = {
+type ToDoType = {
   weekNumber: number;
   content: string;
   checked: boolean;
 };
 
 export type WeekInitialStateType = {
-  questionList: QuestionType[];
+  activeWeek: number;
+  writeMode: boolean;
+  editMode: boolean;
+  toDoList: ToDoType[];
 };

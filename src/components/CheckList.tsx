@@ -1,14 +1,16 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import CheckSVG from '../assets/noToDo.svg';
-import CheckedSVG from '../assets/checked.svg';
-import UnCheckedSVG from '../assets/unChecked.svg';
 import {useDispatch, useSelector} from 'react-redux';
-import {storeInterface} from '../modules/index.d';
-import {QuestionType} from '../modules/week/index.d';
+import {StyleSheet, View} from 'react-native';
+
+import {StoreInterface} from '../modules/index.d';
+import {ToDoType} from '../modules/week/index.d';
+
+import {ToDoList} from './ToDoList';
+import {ToDoInput} from './ToDoInput';
+import {PlusButton} from './PlusButton';
 import {setItem} from '../utils/setItem';
-import {checked} from '../modules/week';
-import {ProgressBar} from './ProgressBar';
+import {Progress} from './Progress';
+import {checked, deleteList, writeMode} from '../modules/week';
 
 type Props = {
   id: number;
@@ -16,10 +18,10 @@ type Props = {
 
 export const CheckList = ({id}: Props) => {
   const dispatch = useDispatch();
-  const weekSe = useSelector((state: storeInterface) => state.week);
-  const [weekToDo, setWeekToDo] = React.useState<QuestionType[]>([]);
+  const weekSe = useSelector((state: StoreInterface) => state.week);
+  const [weekToDo, setWeekToDo] = React.useState<ToDoType[]>([]);
 
-  const doIt = (item: QuestionType) => {
+  const doIt = (item: ToDoType) => {
     dispatch(
       checked({
         content: item.content,
@@ -29,30 +31,40 @@ export const CheckList = ({id}: Props) => {
     );
   };
 
+  const deleteIt = (item: ToDoType) => {
+    dispatch(
+      deleteList({
+        content: item.content,
+        weekNumber: item.weekNumber,
+      }),
+    );
+  };
+
+  const setWriteMode = () => {
+    dispatch(writeMode(true));
+  };
+
   React.useEffect(() => {
-    const item = setItem(weekSe.questionList, id);
+    const item = setItem(weekSe.toDoList, id);
     setWeekToDo(item);
-  }, [weekSe.questionList, id]);
+  }, [weekSe.toDoList, id]);
 
   return (
     <View style={style.toDoListWrapper}>
-      <ProgressBar items={weekToDo} />
+      <Progress items={weekToDo} />
       <View>
         {weekToDo.map(
-          item =>
+          (item, i) =>
             item.weekNumber === id && (
-              <View style={style.toDoList}>
-                <TouchableOpacity onPress={() => doIt(item)}>
-                  {item.checked ? <CheckedSVG /> : <UnCheckedSVG />}
-                </TouchableOpacity>
-                <Text style={style.toDoText}>{item.content}</Text>
-              </View>
+              <ToDoList key={i} item={item} doIt={doIt} deleteIt={deleteIt} />
             ),
         )}
-        <CheckSVG />
       </View>
-      <Text style={style.largeText}>No checklists</Text>
-      <Text>Add checklists that should be checked weekly.</Text>
+      {weekSe.writeMode ? (
+        <ToDoInput weekNum={id} />
+      ) : (
+        <PlusButton event={setWriteMode} />
+      )}
     </View>
   );
 };
@@ -61,7 +73,8 @@ const style = StyleSheet.create({
   toDoListWrapper: {
     flex: 8,
     display: 'flex',
-    alignItems: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
     justifyContent: 'flex-start',
     backgroundColor: '#fff',
   },
@@ -69,21 +82,6 @@ const style = StyleSheet.create({
     fontSize: 20,
     color: '#84858F',
     fontWeight: 'bold',
-  },
-  toDoList: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  toDoText: {
-    fontSize: 14,
-    paddingLeft: 12,
-    color: '#333',
-    textAlign: 'left',
-    lineHeight: 21,
   },
   baseText: {
     fontSize: 18,

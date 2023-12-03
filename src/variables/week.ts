@@ -1,1 +1,4 @@
-export const week = new Array(40);
+export const makeWeekButton = () => {
+  const weekList = Array.from(Array(41).keys()).map(num => num);
+  return weekList;
+};

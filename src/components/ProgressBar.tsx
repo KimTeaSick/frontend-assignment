@@ -1,32 +1,41 @@
-import * as React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {setCompleted} from '../utils/setCompleted';
-import {QuestionType} from '../modules/week/index.d';
+import React, {useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
 type Props = {
-  items: QuestionType[];
+  items: number;
+  completedToDo: number;
 };
 
-export const ProgressBar = ({items}: Props) => {
-  const [completedToDo, setCompletedToDo] = React.useState(0);
-  React.useEffect(() => {
-    const complte = setCompleted(items);
-    setCompletedToDo(complte);
-  }, [items]);
+export const ProgressBar = ({items, completedToDo}: Props) => {
+  const width = useSharedValue(0);
+
+  useEffect(() => {
+    width.value = withTiming(`${(completedToDo / items) * 100}%`, {
+      duration: 1000,
+    });
+  }, [width, items, completedToDo]);
+
   return (
-    <View>
-      <Text style={style.textStyle}>
-        {completedToDo} of {items.length} completed
-      </Text>
-      <View />
+    <View style={style.Progress}>
+      <Animated.View
+        style={[
+          style.Progress,
+          {
+            width,
+            backgroundColor: '#44CEC6',
+          },
+        ]}
+      />
     </View>
   );
 };
 
 const style = StyleSheet.create({
-  textStyle: {
-    fontSize: 16,
-    color: '#333',
-    fontWeight: 'bold',
+  Progress: {
+    height: 6,
+    width: '100%',
+    borderRadius: 10,
+    backgroundColor: '#F6F5F8',
   },
 });

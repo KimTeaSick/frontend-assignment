@@ -1,5 +1,5 @@
 import {WeekInitialStateType} from './week/index.d';
 
-export interface storeInterface {
+export type StoreInterface = {
   week: WeekInitialStateType;
-}
+};

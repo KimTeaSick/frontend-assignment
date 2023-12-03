@@ -1,39 +1,66 @@
 import * as React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
+import {active} from '../modules/week';
 import {DateButton} from './DateButton';
-import {activeSection} from '../utils/activeSection';
+import {makeWeekButton} from '../variables/week';
+import {StoreInterface} from '../modules/index.d';
+
+const weekList = makeWeekButton();
 
 export const DateSection: React.FC = () => {
-  const [activeButton, setActiveButton] = React.useState(15);
-  const [showList, setShowList] = React.useState<number[]>([]);
+  const dispatch = useDispatch();
+  const week = useSelector((state: StoreInterface) => state.week);
 
-  React.useEffect(() => {
-    const active = activeSection(activeButton);
-    setShowList(active);
-  }, [activeButton]);
+  const scrollRef = React.useRef(null);
+  const coiceWeek = (weekNum: number) => {
+    dispatch(active(weekNum));
+  };
 
+  const scrollCenter = (xPosition: number) => {
+    scrollRef.current.scrollTo({
+      x: xPosition,
+      y: 0,
+      animated: true,
+    });
+  };
+
+  //50 + 30 = 65 * activeWeek = center
   return (
     <ScrollView
+      ref={scrollRef}
       horizontal={true}
-      contentContainerStyle={{
-        display: 'flex',
-        columnGap: 15,
-        alignItems: 'center',
-      }}
-      style={{
-        flex: 2,
-        borderBottomWidth: 1,
-        borderBottomColor: '#F6F5F8',
-      }}>
-      {showList.map((v, i) => (
+      centerContent={true}
+      contentOffset={{y: 0, x: 15 * 65 - 10}}
+      style={style.scrollSection}
+      contentContainerStyle={style.scrollContent}>
+      {weekList.map((v, i) => (
         <DateButton
           title={String(v)}
-          event={() => setActiveButton(v)}
-          active={activeButton === v}
+          event={() => {
+            coiceWeek(v);
+            scrollCenter(v * 65 - 10);
+          }}
+          active={week.activeWeek === v}
           key={i}
         />
       ))}
     </ScrollView>
   );
 };
+
+const style = StyleSheet.create({
+  scrollContent: {
+    paddingLeft: 160,
+    paddingRight: 160,
+    display: 'flex',
+    columnGap: 15,
+    alignItems: 'center',
+  },
+  scrollSection: {
+    flex: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F6F5F8',
+  },
+});
