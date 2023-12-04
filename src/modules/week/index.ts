@@ -2,6 +2,7 @@ import {WeekInitialStateType} from './index.d';
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState: WeekInitialStateType = {
+  prevWeek: 0,
   activeWeek: 15,
   writeMode: false,
   editMode: false,
@@ -541,6 +542,7 @@ const weekSlice = createSlice({
       });
     },
     active: (state, action) => {
+      state.prevWeek = state.activeWeek;
       state.activeWeek = action.payload;
     },
     writeMode: (state, action) => {

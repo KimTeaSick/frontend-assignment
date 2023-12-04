@@ -18,7 +18,7 @@ export const PlusButton = ({event}: Props) => {
 const style = StyleSheet.create({
   buttonSection: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 20,
     right: 20,
   },
 });

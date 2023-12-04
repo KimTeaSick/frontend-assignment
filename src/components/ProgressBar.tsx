@@ -1,6 +1,10 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import Animated, {
+  useSharedValue,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 type Props = {
   items: number;
@@ -8,22 +12,24 @@ type Props = {
 };
 
 export const ProgressBar = ({items, completedToDo}: Props) => {
-  const width = useSharedValue(0);
-
+  const precent = useSharedValue(0);
   useEffect(() => {
-    width.value = withTiming(`${(completedToDo / items) * 100}%`, {
+    const ho = Dimensions.get('window').width;
+    const progress = (completedToDo / items) * ho;
+    precent.value = withTiming(progress, {
       duration: 1000,
+      easing: Easing.inOut(Easing.ease),
     });
-  }, [width, items, completedToDo]);
+  }, [items, completedToDo, precent]);
+  console.log(precent);
 
   return (
     <View style={style.Progress}>
       <Animated.View
         style={[
-          style.Progress,
+          style.progressBar,
           {
-            width,
-            backgroundColor: '#44CEC6',
+            width: precent,
           },
         ]}
       />
@@ -37,5 +43,11 @@ const style = StyleSheet.create({
     width: '100%',
     borderRadius: 10,
     backgroundColor: '#F6F5F8',
+    overflow: 'hidden',
+  },
+  progressBar: {
+    width: 0,
+    height: '100%',
+    backgroundColor: '#44CEC6',
   },
 });

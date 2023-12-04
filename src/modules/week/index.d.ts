@@ -5,6 +5,7 @@ type ToDoType = {
 };
 
 export type WeekInitialStateType = {
+  prevWeek: number;
   activeWeek: number;
   writeMode: boolean;
   editMode: boolean;

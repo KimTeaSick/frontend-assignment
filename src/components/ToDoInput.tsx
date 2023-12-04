@@ -1,6 +1,12 @@
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import UploadAbleSVG from '../assets/uploadAble.svg';
 import UploadUnableSVG from '../assets/uploadUnable.svg';
@@ -15,6 +21,14 @@ type Props = {
 export const ToDoInput = ({weekNum}: Props) => {
   const dispatch = useDispatch();
   const [text, setText] = React.useState('');
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+
+  // 이벤트 리스너 등록
+  React.useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', event => {
+      setKeyboardHeight(event.endCoordinates.height);
+    });
+  }, []);
 
   const addToDoList = (weekNum: number, text: string) => {
     dispatch(
@@ -26,7 +40,7 @@ export const ToDoInput = ({weekNum}: Props) => {
   };
 
   return (
-    <View style={style.todoInputWrapper}>
+    <KeyboardAvoidingView style={style(keyboardHeight).todoInputWrapper}>
       <InputWrapper text={text} placeholder="add checklist..." event={setText}>
         <View
           style={{
@@ -40,23 +54,23 @@ export const ToDoInput = ({weekNum}: Props) => {
       <TouchableOpacity onPress={() => addToDoList(weekNum, text)}>
         {text === '' ? <UploadUnableSVG /> : <UploadAbleSVG />}
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
-const style = StyleSheet.create({
-  todoInputWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    left: 20,
-
-    padding: 5,
-    borderWidth: 1,
-    borderRadius: 12,
-    flexDirection: 'row',
-    borderColor: '#EAE9ED',
-    backgroundColor: '#FAFAFA',
-    justifyContent: 'space-between',
-  },
-});
+const style = (keyHeight: number) =>
+  StyleSheet.create({
+    todoInputWrapper: {
+      width: '100%',
+      position: 'absolute',
+      left: 20,
+      bottom: keyHeight,
+      padding: 5,
+      borderWidth: 1,
+      borderRadius: 12,
+      flexDirection: 'row',
+      borderColor: '#EAE9ED',
+      backgroundColor: '#FAFAFA',
+      justifyContent: 'space-between',
+    },
+  });

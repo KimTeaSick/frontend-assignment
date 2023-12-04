@@ -23,12 +23,12 @@ export const ToDoList = ({item, doIt, deleteIt}: Props) => {
 
   React.useEffect(() => {
     if (!week.editMode) {
-      checkWidth.value = withTiming(25, {duration: 100});
+      checkWidth.value = withTiming(28, {duration: 100});
       deleteWidth.value = withTiming(0, {duration: 100});
     }
     if (week.editMode) {
       checkWidth.value = withTiming(0, {duration: 100});
-      deleteWidth.value = withTiming(25, {duration: 100});
+      deleteWidth.value = withTiming(28, {duration: 100});
     }
   }, [deleteWidth, checkWidth, week.editMode]);
 

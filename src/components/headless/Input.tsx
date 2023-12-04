@@ -4,7 +4,7 @@ import {TextInput} from 'react-native';
 type InputContextProps = {
   text: string;
   placeholder: string;
-  event: () => {} | React.Dispatch<React.SetStateAction<string>>;
+  event: React.Dispatch<React.SetStateAction<string>> | (() => {});
 };
 
 type InputProps = InputContextProps & React.PropsWithChildren<{}>;
@@ -29,8 +29,14 @@ const InputWrapper = ({text, placeholder, event, children}: InputProps) => {
 
 const InputBody = () => {
   const {text, placeholder, event} = useInputContext();
+
   return (
-    <TextInput value={text} placeholder={placeholder} onChangeText={event} />
+    <TextInput
+      value={text}
+      autoFocus={true}
+      onChangeText={event}
+      placeholder={placeholder}
+    />
   );
 };
 

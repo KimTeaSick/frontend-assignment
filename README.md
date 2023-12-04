@@ -4,3 +4,5 @@ ruby 버전 오류로 rbenv install 후 native install<br />
 Headless 컴포넌트 사용 UI에 대한 의존성을 낮추기 위해 Button, Input을 Headless로 제작
 
 인풋 넘어가도록 텍스트 생기는 거
+
+progress 바 %문제 해결
