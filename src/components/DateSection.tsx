@@ -2,10 +2,11 @@ import * as React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
+import {StoreInterface} from '../modules/index.d';
+
 import {active} from '../modules/week';
 import {DateButton} from './DateButton';
 import {makeWeekButton} from '../variables/week';
-import {StoreInterface} from '../modules/index.d';
 
 const weekList = makeWeekButton();
 

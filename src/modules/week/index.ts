@@ -6,6 +6,7 @@ const initialState: WeekInitialStateType = {
   activeWeek: 15,
   writeMode: false,
   editMode: false,
+  showToast: false,
   toDoList: [
     {
       checked: false,
@@ -528,6 +529,7 @@ const initialState: WeekInitialStateType = {
         'Consider downloading the contraction timer app on your phone to prepare for labor.',
     },
   ],
+  prevList: [],
 };
 
 const weekSlice = createSlice({
@@ -550,7 +552,7 @@ const weekSlice = createSlice({
     },
     addList: (state, action) => {
       state.toDoList.unshift({
-        weekNumber: action.payload.weekNum,
+        weekNumber: action.payload.weekNumber,
         content: action.payload.content,
         checked: false,
       });
@@ -559,16 +561,34 @@ const weekSlice = createSlice({
       state.editMode = action.payload;
     },
     deleteList: (state, action) => {
+      state.prevList = state.toDoList;
       state.toDoList = state.toDoList.filter(
         list =>
           list.content !== action.payload.content ||
           list.weekNumber !== action.payload.weekNumber,
       );
+      state.showToast = true;
+    },
+    undo: state => {
+      state.toDoList = state.prevList;
+      state.showToast = false;
+    },
+    toastHide: state => {
+      state.showToast = false;
+      state.prevList = [];
     },
   },
 });
 
-export const {checked, active, writeMode, addList, editMode, deleteList} =
-  weekSlice.actions;
+export const {
+  checked,
+  undo,
+  active,
+  writeMode,
+  addList,
+  editMode,
+  deleteList,
+  toastHide,
+} = weekSlice.actions;
 
 export default weekSlice.reducer;

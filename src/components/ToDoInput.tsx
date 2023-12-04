@@ -27,18 +27,17 @@ export const ToDoInput = ({weekNum}: Props) => {
     dispatch(writeMode(false));
   };
 
-  // 이벤트 리스너 등록
   React.useEffect(() => {
     Keyboard.addListener('keyboardDidShow', event => {
       setKeyboardHeight(event.endCoordinates.height);
     });
   }, []);
 
-  const addToDoList = (weekNum: number, text: string) => {
+  const addToDoList = (weekNumber: number, content: string) => {
     dispatch(
       addList({
-        weekNum,
-        content: text,
+        weekNumber,
+        content,
       }),
     );
   };
@@ -51,12 +50,7 @@ export const ToDoInput = ({weekNum}: Props) => {
             text={text}
             placeholder="add checklist..."
             event={setText}>
-            <View
-              style={{
-                justifyContent: 'center',
-                overflow: 'hidden',
-                maxWidth: 'auto',
-              }}>
+            <View style={style.inputContent}>
               <InputWrapper.Input />
             </View>
           </InputWrapper>
@@ -78,6 +72,11 @@ const style = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: 'rgba(0 0 0 / 0.3)',
+  },
+  inputContent: {
+    justifyContent: 'center',
+    overflow: 'hidden',
+    maxWidth: 'auto',
   },
 });
 

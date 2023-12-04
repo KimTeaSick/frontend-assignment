@@ -9,5 +9,7 @@ export type WeekInitialStateType = {
   activeWeek: number;
   writeMode: boolean;
   editMode: boolean;
+  showToast: boolean;
   toDoList: ToDoType[];
+  prevList: ToDoType[];
 };

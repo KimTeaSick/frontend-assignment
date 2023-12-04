@@ -16,26 +16,28 @@ import {EmptyList} from './EmptyList';
 import {setItem} from '../utils/setItem';
 import {checked, deleteList} from '../modules/week';
 
-export const CheckList = () => {
+export const ToDoSection = () => {
   const dispatch = useDispatch();
-  const weekSe = useSelector((state: StoreInterface) => state.week);
+  const week = useSelector((state: StoreInterface) => state.week);
+
   const [weekToDo, setWeekToDo] = React.useState<ToDoType[]>([]);
+
   const offset = useSharedValue(0);
-  const doIt = (item: ToDoType) => {
+  const doIt = (toDo: ToDoType) => {
     dispatch(
       checked({
-        content: item.content,
-        weekNumber: item.weekNumber,
-        checked: !item.checked,
+        weekNumber: toDo.weekNumber,
+        content: toDo.content,
+        checked: !toDo.checked,
       }),
     );
   };
 
-  const deleteIt = (item: ToDoType) => {
+  const deleteIt = (toDo: ToDoType) => {
     dispatch(
       deleteList({
-        content: item.content,
-        weekNumber: item.weekNumber,
+        content: toDo.content,
+        weekNumber: toDo.weekNumber,
       }),
     );
   };
@@ -47,26 +49,26 @@ export const CheckList = () => {
   });
 
   React.useEffect(() => {
-    offset.value = weekSe.prevWeek < weekSe.activeWeek ? 500 : -500;
+    offset.value = week.prevWeek < week.activeWeek ? 500 : -500;
     offset.value = withTiming(0, {
       duration: 500,
     });
-  }, [weekSe.activeWeek, weekSe.prevWeek, offset]);
+  }, [week.activeWeek, week.prevWeek, offset]);
 
   React.useEffect(() => {
-    const item = setItem(weekSe.toDoList, weekSe.activeWeek);
+    const item = setItem(week.toDoList, week.activeWeek);
     setWeekToDo(item);
-  }, [weekSe.activeWeek, weekSe.toDoList]);
+  }, [week.activeWeek, week.toDoList]);
 
   return (
     <>
       <Animated.View style={[style.toDoListWrapper, animatedStyle]}>
         {weekToDo.length !== 0 ? (
           <>
-            <Progress items={weekToDo} />
+            <Progress toDo={weekToDo} />
             <ScrollView>
-              {weekToDo.map((item, i) => (
-                <ToDoList key={i} item={item} doIt={doIt} deleteIt={deleteIt} />
+              {weekToDo.map((toDo, i) => (
+                <ToDoList key={i} toDo={toDo} doIt={doIt} deleteIt={deleteIt} />
               ))}
             </ScrollView>
           </>

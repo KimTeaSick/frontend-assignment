@@ -7,28 +7,28 @@ import {setCompleted} from '../utils/setCompleted';
 import {ProgressBar} from './ProgressBar';
 
 type Props = {
-  items: ToDoType[];
+  toDo: ToDoType[];
 };
 
-export const Progress = ({items}: Props) => {
+export const Progress = ({toDo}: Props) => {
   const [completedToDo, setCompletedToDo] = React.useState(0);
 
   React.useEffect(() => {
-    const complte = setCompleted(items);
+    const complte = setCompleted(toDo);
     setCompletedToDo(complte);
-  }, [items]);
+  }, [toDo]);
 
   return (
     <View style={style.progressWrapper}>
       <View style={style.textSection}>
         <Text style={style.textStyle}>
-          {completedToDo} of {items.length} completed
+          {completedToDo} of {toDo.length} completed
         </Text>
         <Text style={[style.textStyle, style.percentText]}>
-          {((completedToDo / items.length) * 100).toFixed(0)} %
+          {((completedToDo / toDo.length) * 100).toFixed(0)} %
         </Text>
       </View>
-      <ProgressBar items={items.length} completedToDo={completedToDo} />
+      <ProgressBar toDo={toDo.length} completedToDo={completedToDo} />
     </View>
   );
 };

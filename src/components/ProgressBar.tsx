@@ -7,21 +7,21 @@ import Animated, {
 } from 'react-native-reanimated';
 
 type Props = {
-  items: number;
+  toDo: number;
   completedToDo: number;
 };
 
-export const ProgressBar = ({items, completedToDo}: Props) => {
+export const ProgressBar = ({toDo, completedToDo}: Props) => {
   const precent = useSharedValue(0);
+
   useEffect(() => {
     const ho = Dimensions.get('window').width;
-    const progress = (completedToDo / items) * ho;
+    const progress = (completedToDo / toDo) * ho;
     precent.value = withTiming(progress, {
       duration: 1000,
       easing: Easing.inOut(Easing.ease),
     });
-  }, [items, completedToDo, precent]);
-  console.log(precent);
+  }, [toDo, completedToDo, precent]);
 
   return (
     <View style={style.Progress}>

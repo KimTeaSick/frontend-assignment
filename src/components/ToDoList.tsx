@@ -10,12 +10,12 @@ import {ToDoType} from '../modules/week/index.d';
 import {StoreInterface} from '../modules/index.d';
 
 type Props = {
-  item: ToDoType;
-  doIt: (item: ToDoType) => void;
-  deleteIt: (item: ToDoType) => void;
+  toDo: ToDoType;
+  doIt: (toDo: ToDoType) => void;
+  deleteIt: (toDo: ToDoType) => void;
 };
 
-export const ToDoList = ({item, doIt, deleteIt}: Props) => {
+export const ToDoList = ({toDo, doIt, deleteIt}: Props) => {
   const week = useSelector((state: StoreInterface) => state.week);
 
   const checkWidth = useSharedValue(0);
@@ -36,19 +36,21 @@ export const ToDoList = ({item, doIt, deleteIt}: Props) => {
     <View style={style(week.editMode).toDoList}>
       {!week.editMode && (
         <Animated.View style={{width: checkWidth}}>
-          <TouchableOpacity onPress={() => doIt(item)}>
-            {item.checked ? <CheckedSVG /> : <UnCheckedSVG />}
+          <TouchableOpacity onPress={() => doIt(toDo)}>
+            {toDo.checked ? <CheckedSVG /> : <UnCheckedSVG />}
           </TouchableOpacity>
         </Animated.View>
       )}
-      <Text style={style(week.editMode, item.checked).toDoText}>
-        {item.content}
+      <Text
+        style={style(week.editMode, toDo.checked).toDoText}
+        onPress={() => console.log(toDo)}>
+        {toDo.content}
       </Text>
       {week.editMode && (
         <Animated.View style={{width: deleteWidth}}>
           <TouchableOpacity
             style={style(week.editMode).deleteButton}
-            onPress={() => deleteIt(item)}>
+            onPress={() => deleteIt(toDo)}>
             <DeleteSVG />
           </TouchableOpacity>
         </Animated.View>
@@ -65,7 +67,7 @@ const style = (editMode: boolean, checked?: boolean) =>
       marginTop: 10,
       marginBottom: 10,
       flexDirection: 'row',
-      alignItems: 'center',
+      aligntoDos: 'center',
       justifyContent: editMode ? 'space-between' : 'flex-start',
     },
     toDoText: {
