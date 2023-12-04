@@ -7,6 +7,7 @@ const initialState: WeekInitialStateType = {
   writeMode: false,
   editMode: false,
   showToast: false,
+  fixToDo: null,
   toDoList: [
     {
       checked: false,
@@ -557,6 +558,17 @@ const weekSlice = createSlice({
         checked: false,
       });
     },
+    fixToDoChoice: (state, action) => {
+      state.fixToDo = action.payload;
+    },
+    fixList: (state, action) => {
+      state.toDoList.map(list => {
+        list.content === state.fixToDo?.content &&
+          list.weekNumber === state.fixToDo?.weekNumber &&
+          (list.content = action.payload.content);
+      });
+    },
+
     editMode: (state, action) => {
       state.editMode = action.payload;
     },
@@ -589,6 +601,8 @@ export const {
   editMode,
   deleteList,
   toastHide,
+  fixToDoChoice,
+  fixList,
 } = weekSlice.actions;
 
 export default weekSlice.reducer;

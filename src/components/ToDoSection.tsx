@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import {StoreInterface} from '../modules/index.d';
+import {RootInitialType} from '../modules/index.d';
 import {ToDoType} from '../modules/week/index.d';
 
 import {ToDoList} from './ToDoList';
@@ -18,7 +18,7 @@ import {checked, deleteList} from '../modules/week';
 
 export const ToDoSection = () => {
   const dispatch = useDispatch();
-  const week = useSelector((state: StoreInterface) => state.week);
+  const week = useSelector((state: RootInitialType) => state.week);
 
   const [weekToDo, setWeekToDo] = React.useState<ToDoType[]>([]);
 

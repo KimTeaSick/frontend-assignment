@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {DateSection} from './components/DateSection';
 import {ToDoSection} from './components/ToDoSection';
-import {StoreInterface} from './modules/index.d';
+import {RootInitialType} from './modules/index.d';
 import {toastHide, undo, writeMode} from './modules/week';
 import {ToDoInput} from './components/ToDoInput';
 import {PlusButton} from './components/PlusButton';
@@ -12,7 +12,7 @@ import {UndoToast} from './components/UndoToast';
 
 export const Layout: React.FC = () => {
   const dispatch = useDispatch();
-  const week = useSelector((state: StoreInterface) => state.week);
+  const week = useSelector((state: RootInitialType) => state.week);
 
   const setWriteMode = () => {
     dispatch(writeMode(true));

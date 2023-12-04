@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {StoreInterface} from '../modules/index.d';
+import {RootInitialType} from '../modules/index.d';
 
 import {active} from '../modules/week';
 import {DateButton} from './DateButton';
@@ -12,7 +12,7 @@ const weekList = makeWeekButton();
 
 export const DateSection: React.FC = () => {
   const dispatch = useDispatch();
-  const week = useSelector((state: StoreInterface) => state.week);
+  const week = useSelector((state: RootInitialType) => state.week);
 
   const scrollRef = React.useRef(null);
   const coiceWeek = (weekNum: number) => {
@@ -21,13 +21,12 @@ export const DateSection: React.FC = () => {
 
   const scrollCenter = (xPosition: number) => {
     scrollRef.current.scrollTo({
+      animated: true,
       x: xPosition,
       y: 0,
-      animated: true,
     });
   };
 
-  //50 + 30 = 65 * activeWeek = center
   return (
     <ScrollView
       ref={scrollRef}

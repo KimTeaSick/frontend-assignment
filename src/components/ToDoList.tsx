@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
@@ -7,7 +7,8 @@ import DeleteSVG from '../assets/delete.svg';
 import CheckedSVG from '../assets/checked.svg';
 import UnCheckedSVG from '../assets/unChecked.svg';
 import {ToDoType} from '../modules/week/index.d';
-import {StoreInterface} from '../modules/index.d';
+import {RootInitialType} from '../modules/index.d';
+import {fixToDoChoice, writeMode} from '../modules/week';
 
 type Props = {
   toDo: ToDoType;
@@ -16,8 +17,8 @@ type Props = {
 };
 
 export const ToDoList = ({toDo, doIt, deleteIt}: Props) => {
-  const week = useSelector((state: StoreInterface) => state.week);
-
+  const dispatch = useDispatch();
+  const week = useSelector((state: RootInitialType) => state.week);
   const checkWidth = useSharedValue(0);
   const deleteWidth = useSharedValue(0);
 
@@ -43,7 +44,10 @@ export const ToDoList = ({toDo, doIt, deleteIt}: Props) => {
       )}
       <Text
         style={style(week.editMode, toDo.checked).toDoText}
-        onPress={() => console.log(toDo)}>
+        onPress={() => {
+          dispatch(fixToDoChoice(toDo));
+          dispatch(writeMode(true));
+        }}>
         {toDo.content}
       </Text>
       {week.editMode && (

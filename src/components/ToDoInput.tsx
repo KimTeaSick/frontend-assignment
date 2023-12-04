@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   Keyboard,
   StyleSheet,
@@ -12,7 +12,8 @@ import UploadAbleSVG from '../assets/uploadAble.svg';
 import UploadUnableSVG from '../assets/uploadUnable.svg';
 
 import InputWrapper from './headless/Input';
-import {addList, writeMode} from '../modules/week';
+import {addList, fixList, fixToDoChoice, writeMode} from '../modules/week';
+import {RootInitialType} from '../modules/index.d';
 
 type Props = {
   weekNum: number;
@@ -20,27 +21,29 @@ type Props = {
 
 export const ToDoInput = ({weekNum}: Props) => {
   const dispatch = useDispatch();
-  const [text, setText] = React.useState('');
+  const week = useSelector((state: RootInitialType) => state.week);
+  const [text, setText] = React.useState(
+    week.fixToDo ? week.fixToDo.content : '',
+  );
   const [keyboardHeight, setKeyboardHeight] = React.useState(0);
 
   const setWriteMode = () => {
     dispatch(writeMode(false));
   };
 
+  const addToDoList = (weekNumber: number, content: string) => {
+    dispatch(addList({weekNumber, content}));
+  };
+  const fixToDoList = (content: string) => dispatch(fixList({content}));
+
   React.useEffect(() => {
     Keyboard.addListener('keyboardDidShow', event => {
       setKeyboardHeight(event.endCoordinates.height);
     });
-  }, []);
-
-  const addToDoList = (weekNumber: number, content: string) => {
-    dispatch(
-      addList({
-        weekNumber,
-        content,
-      }),
-    );
-  };
+    return () => {
+      dispatch(fixToDoChoice(null));
+    };
+  }, [dispatch]);
 
   return (
     <TouchableWithoutFeedback onPress={() => setWriteMode()}>
@@ -55,7 +58,11 @@ export const ToDoInput = ({weekNum}: Props) => {
             </View>
           </InputWrapper>
           <TouchableOpacity
-            onPress={() => text !== '' && addToDoList(weekNum, text)}>
+            onPress={() =>
+              week.fixToDo
+                ? fixToDoList(text)
+                : text !== '' && addToDoList(weekNum, text)
+            }>
             {text === '' ? <UploadUnableSVG /> : <UploadAbleSVG />}
           </TouchableOpacity>
         </View>
@@ -74,9 +81,9 @@ const style = StyleSheet.create({
     backgroundColor: 'rgba(0 0 0 / 0.3)',
   },
   inputContent: {
-    justifyContent: 'center',
     overflow: 'hidden',
-    maxWidth: 'auto',
+    justifyContent: 'center',
+    width: '85%',
   },
 });
 

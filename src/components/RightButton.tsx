@@ -3,12 +3,12 @@ import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import ButtonWrapper from './headless/Button';
-import {StoreInterface} from '../modules/index.d';
+import {RootInitialType} from '../modules/index.d';
 import {editMode} from '../modules/week';
 
 export const RightButton = () => {
   const dispatch = useDispatch();
-  const week = useSelector((state: StoreInterface) => state.week);
+  const week = useSelector((state: RootInitialType) => state.week);
   const setEditMode = () => {
     dispatch(editMode(!week.editMode));
   };
