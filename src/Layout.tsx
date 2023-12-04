@@ -2,14 +2,15 @@ import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
+import {RootInitialType} from './modules/index.d';
+
 import {DateSection} from './components/DateSection';
 import {ToDoSection} from './components/ToDoSection';
-import {RootInitialType} from './modules/index.d';
-import {toastHide, undo, writeMode} from './modules/week';
 import {ToDoInput} from './components/ToDoInput';
 import {PlusButton} from './components/PlusButton';
 import {UndoToast} from './components/UndoToast';
 import {Header} from './components/Header';
+import {toastHide, undo, writeMode} from './modules/week';
 
 export const Layout: React.FC = () => {
   const dispatch = useDispatch();

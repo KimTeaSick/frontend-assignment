@@ -1,9 +1,14 @@
 import * as React from 'react';
-import ToastWrapper from './headless/Toast';
-import UnDoSVG from '../assets/unDo.svg';
 import {StyleSheet, View} from 'react-native';
 
-export const UndoToast = ({event}) => {
+import ToastWrapper from './headless/Toast';
+import UnDoSVG from '../assets/unDo.svg';
+
+type Props = {
+  event: () => void;
+};
+
+export const UndoToast = ({event}: Props) => {
   return (
     <ToastWrapper
       text={'Checklist deleted'}

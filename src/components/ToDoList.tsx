@@ -67,7 +67,6 @@ const style = (editMode: boolean, checked?: boolean) =>
   StyleSheet.create({
     toDoList: {
       height: 'auto',
-      // backgroundColor: 'red',
       marginTop: 10,
       marginBottom: 10,
       flexDirection: 'row',
