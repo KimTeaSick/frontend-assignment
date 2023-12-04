@@ -82,7 +82,7 @@ export const ToDoSection = () => {
 
 const style = StyleSheet.create({
   toDoListWrapper: {
-    flex: 7,
+    flex: 8,
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: '#fff',

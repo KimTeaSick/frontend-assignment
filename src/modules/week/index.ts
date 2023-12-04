@@ -6,7 +6,7 @@ const initialState: WeekInitialStateType = {
   activeWeek: 15,
   writeMode: false,
   editMode: false,
-  showToast: false,
+  showUndoToast: false,
   fixToDo: null,
   toDoList: [
     {
@@ -579,14 +579,14 @@ const weekSlice = createSlice({
           list.content !== action.payload.content ||
           list.weekNumber !== action.payload.weekNumber,
       );
-      state.showToast = true;
+      state.showUndoToast = true;
     },
     undo: state => {
       state.toDoList = state.prevList;
-      state.showToast = false;
+      state.showUndoToast = false;
     },
     toastHide: state => {
-      state.showToast = false;
+      state.showUndoToast = false;
       state.prevList = [];
     },
   },

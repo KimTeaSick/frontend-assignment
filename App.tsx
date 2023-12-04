@@ -6,6 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Layout} from './src/Layout';
 import {store} from './src/modules';
 import {RightButton} from './src/components/RightButton';
+import {Header} from './src/components/Header';
 
 const Stack = createNativeStackNavigator();
 function App(): JSX.Element {
@@ -17,8 +18,7 @@ function App(): JSX.Element {
             name="Check List"
             component={Layout}
             options={{
-              headerRight: () => <RightButton />,
-              headerShadowVisible: false,
+              header: () => <></>,
             }}
           />
         </Stack.Navigator>

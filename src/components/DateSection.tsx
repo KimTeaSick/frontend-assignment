@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {RootInitialType} from '../modules/index.d';
 
-import {active} from '../modules/week';
 import {DateButton} from './DateButton';
-import {makeWeekButton} from '../variables/week';
+import {active} from '../modules/week';
+import {makeWeekButton} from '../variables/makeWeekButton';
 
 const weekList = makeWeekButton();
 
@@ -32,7 +32,7 @@ export const DateSection: React.FC = () => {
       ref={scrollRef}
       horizontal={true}
       centerContent={true}
-      contentOffset={{y: 0, x: 15 * 65 - 10}}
+      contentOffset={{y: 0, x: 15 * 65 - 80}}
       style={style.scrollSection}
       contentContainerStyle={style.scrollContent}>
       {weekList.map((v, i) => (
@@ -40,7 +40,7 @@ export const DateSection: React.FC = () => {
           title={String(v)}
           event={() => {
             coiceWeek(v);
-            scrollCenter(v * 65 - 10);
+            scrollCenter(v * 65 - 80);
           }}
           active={week.activeWeek === v}
           key={i}

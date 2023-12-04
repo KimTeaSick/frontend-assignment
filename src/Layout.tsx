@@ -9,6 +9,7 @@ import {toastHide, undo, writeMode} from './modules/week';
 import {ToDoInput} from './components/ToDoInput';
 import {PlusButton} from './components/PlusButton';
 import {UndoToast} from './components/UndoToast';
+import {Header} from './components/Header';
 
 export const Layout: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,11 @@ export const Layout: React.FC = () => {
       dispatch(toastHide());
     }, 5000);
     return () => clearTimeout(timeoutId);
-  }, [week]);
+  }, [week, dispatch]);
 
   return (
     <View style={style.layoutWrapper}>
+      <Header />
       <DateSection />
       <ToDoSection />
       {week.writeMode ? (
@@ -34,7 +36,7 @@ export const Layout: React.FC = () => {
       ) : (
         <PlusButton event={setWriteMode} />
       )}
-      {week.showToast && <UndoToast event={() => dispatch(undo())} />}
+      {week.showUndoToast && <UndoToast event={() => dispatch(undo())} />}
     </View>
   );
 };

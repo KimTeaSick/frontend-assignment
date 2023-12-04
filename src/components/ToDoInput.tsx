@@ -48,23 +48,25 @@ export const ToDoInput = ({weekNum}: Props) => {
   return (
     <TouchableWithoutFeedback onPress={() => setWriteMode()}>
       <View style={style.writeModeSection}>
-        <View style={fnStyle(keyboardHeight).todoInputWrapper}>
-          <InputWrapper
-            text={text}
-            placeholder="add checklist..."
-            event={setText}>
-            <View style={style.inputContent}>
-              <InputWrapper.Input />
-            </View>
-          </InputWrapper>
-          <TouchableOpacity
-            onPress={() =>
-              week.fixToDo
-                ? fixToDoList(text)
-                : text !== '' && addToDoList(weekNum, text)
-            }>
-            {text === '' ? <UploadUnableSVG /> : <UploadAbleSVG />}
-          </TouchableOpacity>
+        <View style={fnStyle(keyboardHeight).todoInputSection}>
+          <View style={style.inputWrapper}>
+            <InputWrapper
+              text={text}
+              placeholder="add checklist..."
+              event={setText}>
+              <View style={style.inputContent}>
+                <InputWrapper.Input />
+              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  week.fixToDo
+                    ? fixToDoList(text)
+                    : text !== '' && addToDoList(weekNum, text)
+                }>
+                {text === '' ? <UploadUnableSVG /> : <UploadAbleSVG />}
+              </TouchableOpacity>
+            </InputWrapper>
+          </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -76,9 +78,18 @@ const style = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    paddingLeft: 20,
-    paddingRight: 20,
     backgroundColor: 'rgba(0 0 0 / 0.3)',
+  },
+  inputWrapper: {
+    width: '100%',
+    bottom: 0,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 12,
+    flexDirection: 'row',
+    borderColor: '#EAE9ED',
+    backgroundColor: '#FAFAFA',
+    justifyContent: 'space-between',
   },
   inputContent: {
     overflow: 'hidden',
@@ -89,16 +100,17 @@ const style = StyleSheet.create({
 
 const fnStyle = (keyHeight: number) =>
   StyleSheet.create({
-    todoInputWrapper: {
+    todoInputSection: {
       width: '100%',
       position: 'absolute',
-      bottom: keyHeight === 0 ? 20 : keyHeight,
-      left: 20,
-      padding: 5,
+      bottom: keyHeight === 0 ? 0 : keyHeight,
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 20,
+      paddingTop: 10,
       borderWidth: 1,
-      borderRadius: 12,
       flexDirection: 'row',
-      borderColor: '#EAE9ED',
+      borderColor: '#F6F5F8',
       backgroundColor: '#FAFAFA',
       justifyContent: 'space-between',
     },
