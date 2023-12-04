@@ -1,28 +1,22 @@
 import * as React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ScrollView, StyleSheet, View} from 'react-native';
-
-import {StoreInterface} from '../modules/index.d';
-import {ToDoType} from '../modules/week/index.d';
-
-import {ToDoList} from './ToDoList';
-import {ToDoInput} from './ToDoInput';
-import {PlusButton} from './PlusButton';
-import {Progress} from './Progress';
-import {EmptyList} from './EmptyList';
-import {setItem} from '../utils/setItem';
-import {checked, deleteList, writeMode} from '../modules/week';
+import {ScrollView, StyleSheet} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 
-type Props = {
-  id: number;
-};
+import {StoreInterface} from '../modules/index.d';
+import {ToDoType} from '../modules/week/index.d';
 
-export const CheckList = ({id}: Props) => {
+import {ToDoList} from './ToDoList';
+import {Progress} from './Progress';
+import {EmptyList} from './EmptyList';
+import {setItem} from '../utils/setItem';
+import {checked, deleteList} from '../modules/week';
+
+export const CheckList = () => {
   const dispatch = useDispatch();
   const weekSe = useSelector((state: StoreInterface) => state.week);
   const [weekToDo, setWeekToDo] = React.useState<ToDoType[]>([]);
@@ -46,10 +40,6 @@ export const CheckList = ({id}: Props) => {
     );
   };
 
-  const setWriteMode = () => {
-    dispatch(writeMode(true));
-  };
-
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateX: offset.value}],
@@ -61,40 +51,38 @@ export const CheckList = ({id}: Props) => {
     offset.value = withTiming(0, {
       duration: 500,
     });
-  }, [id]);
+  }, [weekSe.activeWeek, weekSe.prevWeek, offset]);
 
   React.useEffect(() => {
-    const item = setItem(weekSe.toDoList, id);
+    const item = setItem(weekSe.toDoList, weekSe.activeWeek);
     setWeekToDo(item);
-  }, [id, weekSe.toDoList]);
+  }, [weekSe.activeWeek, weekSe.toDoList]);
 
   return (
-    <Animated.View style={[style.toDoListWrapper, animatedStyle]}>
-      {weekToDo.length !== 0 ? (
-        <ScrollView>
-          <Progress items={weekToDo} />
-          {weekToDo.map((item, i) => (
-            <ToDoList key={i} item={item} doIt={doIt} deleteIt={deleteIt} />
-          ))}
-        </ScrollView>
-      ) : (
-        <EmptyList />
-      )}
-      {weekSe.writeMode ? (
-        <ToDoInput weekNum={id} />
-      ) : (
-        <PlusButton event={setWriteMode} />
-      )}
-    </Animated.View>
+    <>
+      <Animated.View style={[style.toDoListWrapper, animatedStyle]}>
+        {weekToDo.length !== 0 ? (
+          <>
+            <Progress items={weekToDo} />
+            <ScrollView>
+              {weekToDo.map((item, i) => (
+                <ToDoList key={i} item={item} doIt={doIt} deleteIt={deleteIt} />
+              ))}
+            </ScrollView>
+          </>
+        ) : (
+          <EmptyList />
+        )}
+      </Animated.View>
+    </>
   );
 };
 
 const style = StyleSheet.create({
   toDoListWrapper: {
-    flex: 8,
+    flex: 7,
     paddingLeft: 20,
     paddingRight: 20,
-    // justifyContent: 'flex-start',
     backgroundColor: '#fff',
   },
 });

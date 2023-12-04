@@ -15,7 +15,7 @@ export const RightButton = () => {
   return (
     <TouchableOpacity>
       <ButtonWrapper
-        title={week.editMode ? 'Done' : 'Edit'}
+        title={week.writeMode ? '' : week.editMode ? 'Done' : 'Edit'}
         event={setEditMode}>
         <ButtonWrapper.Body>
           <ButtonWrapper.Label />

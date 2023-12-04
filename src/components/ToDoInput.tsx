@@ -2,9 +2,9 @@ import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {
   Keyboard,
-  KeyboardAvoidingView,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -12,7 +12,7 @@ import UploadAbleSVG from '../assets/uploadAble.svg';
 import UploadUnableSVG from '../assets/uploadUnable.svg';
 
 import InputWrapper from './headless/Input';
-import {addList} from '../modules/week';
+import {addList, writeMode} from '../modules/week';
 
 type Props = {
   weekNum: number;
@@ -22,6 +22,10 @@ export const ToDoInput = ({weekNum}: Props) => {
   const dispatch = useDispatch();
   const [text, setText] = React.useState('');
   const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+
+  const setWriteMode = () => {
+    dispatch(writeMode(false));
+  };
 
   // 이벤트 리스너 등록
   React.useEffect(() => {
@@ -40,31 +44,50 @@ export const ToDoInput = ({weekNum}: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView style={style(keyboardHeight).todoInputWrapper}>
-      <InputWrapper text={text} placeholder="add checklist..." event={setText}>
-        <View
-          style={{
-            justifyContent: 'center',
-            overflow: 'hidden',
-            maxWidth: 'auto',
-          }}>
-          <InputWrapper.Input />
+    <TouchableWithoutFeedback onPress={() => setWriteMode()}>
+      <View style={style.writeModeSection}>
+        <View style={fnStyle(keyboardHeight).todoInputWrapper}>
+          <InputWrapper
+            text={text}
+            placeholder="add checklist..."
+            event={setText}>
+            <View
+              style={{
+                justifyContent: 'center',
+                overflow: 'hidden',
+                maxWidth: 'auto',
+              }}>
+              <InputWrapper.Input />
+            </View>
+          </InputWrapper>
+          <TouchableOpacity
+            onPress={() => text !== '' && addToDoList(weekNum, text)}>
+            {text === '' ? <UploadUnableSVG /> : <UploadAbleSVG />}
+          </TouchableOpacity>
         </View>
-      </InputWrapper>
-      <TouchableOpacity onPress={() => addToDoList(weekNum, text)}>
-        {text === '' ? <UploadUnableSVG /> : <UploadAbleSVG />}
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
-const style = (keyHeight: number) =>
+const style = StyleSheet.create({
+  writeModeSection: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: 'rgba(0 0 0 / 0.3)',
+  },
+});
+
+const fnStyle = (keyHeight: number) =>
   StyleSheet.create({
     todoInputWrapper: {
       width: '100%',
       position: 'absolute',
+      bottom: keyHeight === 0 ? 20 : keyHeight,
       left: 20,
-      bottom: keyHeight,
       padding: 5,
       borderWidth: 1,
       borderRadius: 12,

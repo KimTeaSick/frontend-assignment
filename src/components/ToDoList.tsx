@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {useSelector} from 'react-redux';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
 import DeleteSVG from '../assets/delete.svg';
 import CheckedSVG from '../assets/checked.svg';
 import UnCheckedSVG from '../assets/unChecked.svg';
 import {ToDoType} from '../modules/week/index.d';
 import {StoreInterface} from '../modules/index.d';
-import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
 type Props = {
   item: ToDoType;
@@ -60,8 +60,9 @@ export const ToDoList = ({item, doIt, deleteIt}: Props) => {
 const style = (editMode: boolean, checked?: boolean) =>
   StyleSheet.create({
     toDoList: {
+      height: 'auto',
+      // backgroundColor: 'red',
       marginTop: 10,
-      display: 'flex',
       marginBottom: 10,
       flexDirection: 'row',
       alignItems: 'center',
@@ -70,7 +71,6 @@ const style = (editMode: boolean, checked?: boolean) =>
     toDoText: {
       width: '80%',
       fontSize: 14,
-      flexShrink: 1,
       lineHeight: 21,
       paddingLeft: 12,
       color: checked ? '#C4C4C4' : '#333',

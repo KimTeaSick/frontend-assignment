@@ -1,37 +1,30 @@
 import * as React from 'react';
-import {
-  Keyboard,
-  SafeAreaView,
-  StyleSheet,
-  TouchableNativeFeedback,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {DateSection} from './components/DateSection';
 import {CheckList} from './components/CheckList';
 import {StoreInterface} from './modules/index.d';
 import {writeMode} from './modules/week';
+import {ToDoInput} from './components/ToDoInput';
+import {PlusButton} from './components/PlusButton';
 
 export const Layout: React.FC = () => {
-  const week = useSelector((state: StoreInterface) => state.week);
   const dispatch = useDispatch();
-
+  const week = useSelector((state: StoreInterface) => state.week);
   const setWriteMode = () => {
-    dispatch(writeMode(false));
+    dispatch(writeMode(true));
   };
-
   return (
-    <TouchableNativeFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-        setWriteMode();
-      }}>
-      <SafeAreaView style={style.layoutWrapper}>
-        <DateSection />
-        <CheckList id={week.activeWeek} />
-      </SafeAreaView>
-    </TouchableNativeFeedback>
+    <View style={style.layoutWrapper}>
+      <DateSection />
+      <CheckList />
+      {week.writeMode ? (
+        <ToDoInput weekNum={week.activeWeek} />
+      ) : (
+        <PlusButton event={setWriteMode} />
+      )}
+    </View>
   );
 };
 
